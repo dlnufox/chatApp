@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<meta charset='utf-8'>
+<head>
+<title>chatApp</title>
+<script src="https://cdn.socket.io/socket.io-1.2.1.js"></script>
+<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+<script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<style type="text/css">
+	*{margin:0px;padding:0px;}
+	#window{width:660px;margin:30px auto;border:1px solid #dedede;box-shadow:0px 0px 3px #dedede;height:550px;}
+	#msgContent{width:100%;height:500px;background:#000; overflow:auto;}
+	#msgContent p{height:24px;font-size:12px;line-height:24px;text-indent:16px;color:#fff;}
+	#sendInput{width:640px;height:30px;padding:10px;}
+	.msgInput-div{width:530px;height:28px;margin-right:10px;float:left; overflow:hidden;}
+	.msgInput-div input{height:28px;}
+	#sendBtn{float:right;height:28px;}
+</style>
+<script>
+  var roomId = <?php echo $roomId;?>;
+  var userId = <?php echo $_SESSION['userId'];?>;
+  var userName = '<?php echo $_SESSION['userName'];?>';
+  <?php if(SITE_EVN == 'local'){?>
+  var server = 'http://im.izhengyin.local';
+  <?php }else{?>
+  var server = 'http://im.izhengyin.com';
+  <?php }?>
+  var socket = io(server);
+  //房间消息
+  socket.on('roomMsgTo_'+roomId, function (data) {
+	  $('#msgContent').append('<p>'+data.sendTime+'  <a href="javascript:at('+data.senderId+',\''+data.senderName+'\');">'+data.senderName+'</a>:'+data.msgContent+'</p>');
+  });
+  //私有消息
+  socket.on('privateMsgTo_'+userId, function (data) {
+	  if(data.senderId==userId){
+		  $('#msgContent').append('<p>'+data.sendTime+'  你对'+data.receiveName+'说:'+data.msgContent+'</p>');	
+	  }else{
+		  $('#msgContent').append('<p>'+data.sendTime+'  '+data.senderName+'对你说:'+data.msgContent+'</p>');	
+	  }
+  });
+  //进入房间
+  socket.on('joinRoom_'+roomId, function (data) {
+	  $('#msgContent').append('<p>'+data.joinTime+'  <a href="javascript:at('+data.userId+',\''+data.name+'\');">'+data.name+'</a>进入房间。</p>');
+	  //强制离开房间
+	  socket.on('enforceOutRoom_'+roomId, function (data) {
+		 if(data.userId == userId){
+			 alert('系统检测到您在别的地方进入了该房间，本次连接将自动断开。');
+			 window.location.href="/index.html";
+		 }
+	  });
+   });
+  //退出房间
+  socket.on('outRoom_'+roomId, function (data) {
+	  $('#msgContent').append('<p>'+data.outTime+'  '+data.name+' 退出房间。</p>');
+  });
+  //连接
+  socket.on('connection',function(data){
+	  joinRoom();
+	  console.log(data)
+  })
+//输入框提交
+var submit = function(){
+  	var msgContent = $('#msgInput').val();		
+	var atUserId = $('#atUser').attr('atUserId');
+	var atUserName = $('#atUser').attr('atUserName');
+	
+	if(atUserId && atUserName){
+		sendMsg('privateMsg',{
+			userId:atUserId,
+			userName:atUserName
+		});
+	}else{
+		sendMsg('roomMsg');
+	}
+}
+
+//发送消息
+var sendMsg = function(cmd,atUser){
+	var msgContent = $('#msgInput').val();
+	var data = {};
+	data.cmd = cmd;
+	if(cmd == 'privateMsg'){
+		data.receiveId = atUser.userId;
+		data.receiveName = atUser.userName;
+	}
+	data.roomId = roomId;
+	data.senderId = userId;
+	data.senderName = userName;
+	data.msgContent = msgContent;
+  	socket.emit('newMessage',data);
+  	$('#msgInput').val('');
+}
+//进入房间
+var joinRoom = function(){
+	var data = {};
+	data.roomId = roomId;
+	data.name = userName;
+	data.userId = userId;
+	socket.emit('joinRoom',data);
+}
+//at 用户
+var at = function(id,name){
+	if(id == userId){
+		alert('您不能at 自己！');
+		return false;
+	}
+	
+	$('#atUser').html(' @'+name);
+	$('#atUser').attr('atUserId',id);
+	$('#atUser').attr('atUserName',name);
+}
+  
+$(function(){
+	$('#sendBtn').click(submit)
+    $('#sendInput').keyup(function(event){
+    	 var keycode = event.which;
+      	 if (keycode == 13 ) {
+       		submit();
+      	 }
+    })
+})
+</script>
+</head>
+<body>
+	<div id="window">
+		<div id="msgContent">
+		</div>
+		<div id="sendInput">
+			<div class="input-group msgInput-div">
+  				<span class="input-group-addon" id="atUser" atUserId="0" atUserName="">@全部</span>
+  				<input type="text" class="form-control" id="msgInput" placeholder="输入消息内容 ... " />
+			</div>
+			<button type="submit" class="btn btn-default btn-sm" id="sendBtn">Submit</button>
+		</div>
+	</div>
+</body>
+</html>
