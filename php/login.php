@@ -6,7 +6,7 @@
  * @author zhengyin <zhengyin.name@gmail.com>
  * 
  */
-
+include 'conf.php';
 ini_set('session.cookie_domain',$conf['session']['demain']);
 session_start();
 if(isset($_SESSION['userId']) && $_SESSION['userId']>0){
