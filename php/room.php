@@ -5,7 +5,7 @@
  * @author zhengyin <zhengyin.name@gmail.com>
  */
 $conf = include 'conf.php';
-ini_set('session.cookie_domain',$conf['session']['demain']);
+ini_set('session.cookie_domain',$conf['session']['domain']);
 session_start();
 $roomId = isset($_GET['roomId'])?(int)$_GET['roomId']:0;
 if(!in_array($roomId, array(1,2,3))){

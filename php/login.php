@@ -7,7 +7,7 @@
  * 
  */
 $conf = include 'conf.php';
-ini_set('session.cookie_domain',$conf['session']['demain']);
+ini_set('session.cookie_domain',$conf['session']['domain']);
 session_start();
 if(isset($_SESSION['userId']) && $_SESSION['userId']>0){
 	header('Location:index.html');	
