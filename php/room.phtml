@@ -21,11 +21,7 @@
   var roomId = <?php echo $roomId;?>;
   var userId = <?php echo $_SESSION['userId'];?>;
   var userName = '<?php echo $_SESSION['userName'];?>';
-  <?php if(SITE_EVN == 'local'){?>
-  var server = 'http://im.izhengyin.local';
-  <?php }else{?>
-  var server = 'http://im.izhengyin.com';
-  <?php }?>
+  var server = <?php echo $conf['imServer']?>;
   var socket = io(server);
   //房间消息
   socket.on('roomMsgTo_'+roomId, function (data) {

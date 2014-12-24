@@ -7,7 +7,7 @@
  * 
  */
 
-ini_set('session.cookie_domain','.izhengyin.local');
+ini_set('session.cookie_domain',$conf['session']['demain']);
 session_start();
 if(isset($_SESSION['userId']) && $_SESSION['userId']>0){
 	header('Location:index.html');	
