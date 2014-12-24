@@ -11,13 +11,13 @@
 博文列表
 -------------------
 <ul>
-<ol><a target="_blank" href="http://izhengyin.com/Detail/1.html">使用node.js构建tcp服务 </a></ol>
-<ol><a target="_blank" href="http://izhengyin.com/Detail/2.html">关于 node.js与websocket</a></ol>
-<ol><a target="_blank" href="http://izhengyin.com/Detail/3.html">node.js socket.io</a></ol>
-<ol><a target="_blank" href="http://izhengyin.com/Detail/4.html">socket.io 负载均衡</a></ol>
-<ol><a target="_blank" href="http://izhengyin.com/Detail/5.html">设计一个简单的聊天室（一）</a></ol>
-<ol><a target="_blank" href="http://izhengyin.com/Detail/6.html">设计一个简单的聊天室（二）</a></ol>
-<ol><a target="_blank" href="#">未完..</a></ol>
+<li><a target="_blank" href="http://izhengyin.com/Detail/1.html">使用node.js构建tcp服务 </a></li>
+<li><a target="_blank" href="http://izhengyin.com/Detail/2.html">关于 node.js与websocket</a></li>
+<li><a target="_blank" href="http://izhengyin.com/Detail/3.html">node.js socket.io</a></li>
+<li><a target="_blank" href="http://izhengyin.com/Detail/4.html">socket.io 负载均衡</a></li>
+<li><a target="_blank" href="http://izhengyin.com/Detail/5.html">设计一个简单的聊天室（一）</a></li>
+<li><a target="_blank" href="http://izhengyin.com/Detail/6.html">设计一个简单的聊天室（二）</a></li>
+<li><a target="_blank" href="#">未完..</a></li>
 </ul>
 DEMO
 -------------------
