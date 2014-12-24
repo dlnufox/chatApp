@@ -21,3 +21,5 @@
 </ul>
 DEMO
 -------------------
+
+<a target="_blank" href="http://chatapp.izhengyin.com"><strong>http://chatapp.izhengyin.com</strong></a>
