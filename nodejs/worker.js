@@ -108,7 +108,7 @@ var listenEvent = function(socket, session) {
  */
 var getSession = function(sessId, callBack) {
 	superagent.get(
-			'http://izhengyin.local/test/socket_io/session.php?sessId='
+			'http://chatapp.izhengyin.com/session.php?sessId='
 					+ sessId).end(function(err, sres) {
 		// 常规的错误处理
 		if (err) {
